@@ -18,6 +18,18 @@ Rename config.py.example config.py, and replace CHANGEME with a random key (chos
 
 ## Usage ##
 
+Several scripts constitute the program:
+- panoptiphone.py makes the core calculation and can be launched with several options (described below).
+- panoptiphone.sh is a script to launch previous program with the correct options to operate live on the wlan0 interface (wlan0 must be able to switch to monitor mode).
+- panoptiphone_file.sh launches previous program on a file given as a parameter.
+
+panoptiphone's.py options:
+- -d: dump the database's content, i.e., information about the different fields (information elements) and the identifying information they bring
+- -f <file.csv>: take a csv file as input
+- -g: activate graphical interface
+- -i: activate interactive mode (displays all incoming device captures)
+- -v <field>: dump details about a field
+- -x: take XML stream as input (useful to parse tshark's output for panoptiphone*.sh)
 
 ## Examples of uses ##
 
@@ -61,4 +73,4 @@ FFFFFFFF  | 4
 
 - CLI and GUI:
 
-[GUI example](example.png)
+![GUI example](example.png?raw=true "GUI example")
