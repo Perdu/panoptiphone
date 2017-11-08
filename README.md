@@ -18,11 +18,10 @@ Rename config.py.example config.py, and replace CHANGEME with a random key (chos
 
 ## Usage ##
 
-Live capture:
 
-```
-./panoptiphone.sh wlan0
-```
+## Examples of uses ##
+
+- CLI
 
 ```
 $ ./panoptiphone.sh wlan0 # Live capture
@@ -59,3 +58,7 @@ Value     | Number of times seen
 0         | 17353
 FFFFFFFF  | 4
 ```
+
+- CLI and GUI:
+
+[GUI example](example.png)
