@@ -1,12 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Todo :
-# - (interactive) when locally administered bit is set, do not take any frame during the next minute
-# - does the mac address look spoofed
-# finish transition to xml
-# - total entropy
-
 import sys
 import fileinput
 import csv
