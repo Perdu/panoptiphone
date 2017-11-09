@@ -16,6 +16,11 @@ See details in the related paper: [Panoptiphone: How Unique is Your Wi-Fi Device
 
 Rename config.py.example config.py, and replace CHANGEME with a random key (chose a long and random password, you won't need to remember it).
 
+All calculation is made relatively to a database. You can chose to iteratively build a database out of devices you encounter, or create a database out of public datasets. For instance, you can download the [Sapienza dataset](https://crawdad.org/sapienza/probe-requests/20130910/) add all devices using the following command (expect a few hours):
+```
+for i in sapienza/*/*.pcap* ; do echo "$i" ; tshark -r "$i" -T pdml | python panoptiphone.py >/dev/null ; done
+```
+
 ## Usage ##
 
 Several scripts constitute the program:
