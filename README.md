@@ -77,3 +77,8 @@ FFFFFFFF  | 4
 - CLI and GUI: Left-hand size of the image show the output on the terminal, listing the different fields, the entropy they bring (how much identifying information they bring), and the uniqueness of the value. Right-hand size is the GUI: detected devices are listed on the left, identified by their MAC address and their constructor name. Once one is selected, a dendrogram displays how much entropy is brought by each field and subfield.
 
 ![GUI example](example.png?raw=true "GUI example")
+
+
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1044394.svg)](https://doi.org/10.5281/zenodo.1044394)
+
