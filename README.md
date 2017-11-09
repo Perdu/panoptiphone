@@ -25,11 +25,9 @@ Several scripts constitute the program:
 
 panoptiphone's.py options:
 - -d: dump the database's content, i.e., information about the different fields (information elements) and the identifying information they bring
-- -f <file.csv>: take a csv file as input
 - -g: activate graphical interface
 - -i: activate interactive mode (displays all incoming device captures)
 - -v <field>: dump details about a field
-- -x: take XML stream as input (useful to parse tshark's output for panoptiphone*.sh)
 
 ## Examples of uses ##
 

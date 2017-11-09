@@ -48,7 +48,6 @@ database_already_saved = False
 class Options:
     f = sys.stdin
     interactive = False
-    xml = False
     dump_db = False
     dump_values = False
     graphical = False
@@ -116,17 +115,6 @@ def calculate_entropy_total(key):
 def is_LA_bit_set(mac):
     first_byte = mac[0:2].decode("hex")
     return (ord(first_byte) & 0x02) != 0
-
-def new_frame(line):
-    global last_frame_time
-    # remove nanoseconds information from the date since strptime is not able
-    # to parse it
-    IEs[0] = re.sub('\d\d\d CES?T', '', IEs[0])
-    frame_time = datetime.datetime.strptime(IEs[0], '%b %d, %Y %H:%M:%S.%f')
-    diff = frame_time - last_frame_time
-    last_frame_time = frame_time
-    if diff < MAX_TIME_DIFF_BURST:
-        return
 
 def get_nb_spaces(val, max_val):
     nb_spaces = 0
@@ -523,44 +511,25 @@ def parse_options():
     for o, arg in opts:
         if o == '-d':
             options.dump_db = True
-        elif o == '-f':
-            options.f = arg
         elif o == '-g':
             options.graphical = True
         elif o == '-i':
             options.interactive = True
         elif o == '-v':
             options.dump_values = arg
-        elif o == '-x':
-            options.xml = True
 
 def normal_execution():
-    if options.xml:
+    if options.dump_db == True:
+        dump_db()
+    elif options.dump_values != False:
+        dump_values(options.dump_values)
+    else:
         # For stream reading
         cur_packet = None
         for event, elem in xml.etree.ElementTree.iterparse(options.f):
             if elem.tag == 'packet':
                 new_frame_xml(elem)
                 elem.clear()
-    if options.f is not sys.stdin:
-        with open(options.f, 'r') as f_handler:
-            for line in csv.reader(f_handler, delimiter=';'):
-                new_frame(line)
-    else:
-        if not (options.dump_db or options.dump_values):
-            while True:
-                f = sys.stdin.readline()
-                b = StringIO.StringIO(f)
-                l = list(csv.reader(b, delimiter=';'))
-                if len(l) > 0:
-                    line = l[0]
-                    new_frame(line)
-                else:
-                    break
-    if options.dump_db == True:
-        dump_db()
-    if options.dump_values != False:
-        dump_values(options.dump_values)
     save_db()
 
 if __name__=='__main__':
