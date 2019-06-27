@@ -132,7 +132,7 @@ def handle_elem(fields_xml, d, superfield, fields, seen_elems):
         # Only use leaf nodes
         # Non-leaf nodes repeat values in the leaves
         name = field.get('name')
-        if name == 'wlan_mgt.ssid' or name == 'wlan_mgt.ds.current_channel':
+        if name == 'wlan.ssid' or name == 'wlan.ds.current_channel':
             fields_xml.remove(field)
             continue
         actual_name = name
@@ -157,7 +157,7 @@ def print_frame(f, mac_address):
     seen_elems = set()
     fields = {}
     d = {}
-    fields_xml = f.findall("proto[@name='wlan_mgt']/*field")
+    fields_xml = f.findall("proto[@name='wlan']/*field")
     if fields_xml == []:
         # for some reason, there is no IE (malformed packet)
         return
@@ -307,16 +307,17 @@ def new_frame_xml(f):
         return
     print "Adding device to the database"
     mac_addresses.append(convert_to_hashed_value(mac_address))
-    # print mac_address
+    print mac_address
+    
     # all subfields at any depth
-    fields = f.findall("proto[@name='wlan_mgt']//*field")
+    fields = f.findall("proto[@name='wlan']//*field")
     for field in fields:
         subfields = field.findall('field')
         # Only use leaf nodes
         # Non-leaf nodes repeat values in the leaves
         if subfields == []:
             name = field.get('name')
-            if name == 'wlan_mgt.ssid' or name == 'wlan_mgt.ds.current_channel':
+            if name == 'wlan.ssid' or name == 'wlan.ds.current_channel':
                 continue
             val = field.get('value')
             if val == None:
@@ -348,6 +349,9 @@ def save_db():
 
 def dump_db():
     global db
+    if not db:
+        print "Empty database"
+        return
     fields = {}
     lengths = [len(x) for x in db.keys()]
     if not lengths:
@@ -491,7 +495,9 @@ def show_dendrogram(index):
         gui.add_dendrogram(fig)
 
 def action_btn_show_ie():
-    index = gui.lst_devices.list.curselection()[0]
+    selection = gui.lst_devices.list.curselection()
+    if not selection: return
+    index = selection[0]
     print str_ies[index]
     show_dendrogram(index)
 
