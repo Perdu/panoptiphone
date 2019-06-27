@@ -27,7 +27,10 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 #from matplotlib.backend_bases import key_press_handler
 from matplotlib.figure import Figure
 import hashlib
+import json
+from collections import OrderedDict
 from config import sha256key
+
 
 DB_FILE = 'database.db'
 OUI_FILE = 'oui.txt'
@@ -51,6 +54,7 @@ class Options:
     dump_db = False
     dump_values = False
     graphical = False
+    write_file = None               # file object for writing JSON dumps of each flattened record; the resulting file is in .jl (JSON Lines) format
 
 options = Options()
 
@@ -180,6 +184,14 @@ def print_frame(f, mac_address):
             create_dendrograms(d, fields)
     print
     print str_ie
+    
+    if options.write_file:
+        dump = OrderedDict([('_mac_address_', mac_address), ('_vendor_', vendor)])
+        dump.update({name.strip(): f['val'] for name, f in fields.items()})
+        print >>options.write_file, json.dumps(dump)
+        # print(json.dumps(dump), file = options.write_file)    # python3
+        options.write_file.flush()
+    
 
 def get_str_ie(fields, mac_address, vendor):
     str_ie = ""
@@ -519,7 +531,7 @@ def help():
 def parse_options():
     global options
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'df:ghiv:x', ['help'])
+        opts, args = getopt.getopt(sys.argv[1:], 'df:ghiv:wx', ['help'])
     except getopt.GetoptError as err:
         print "Error: ", str(err)
         sys.exit(1)
@@ -532,6 +544,8 @@ def parse_options():
             options.interactive = True
         elif o == '-v':
             options.dump_values = arg
+        elif o == '-w':
+            options.write_file = open(arg, 'wt')
         elif o == '-h' or o == '--help':
             help()
 
