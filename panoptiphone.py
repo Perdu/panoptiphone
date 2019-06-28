@@ -33,7 +33,7 @@ from config import sha256key
 
 
 DB_FILE = 'database.db'
-OUI_FILE = 'oui.txt'
+OUI_FILE = 'oui_2019-06.txt'
 MAX_TIME_DIFF_BURST = datetime.timedelta(0,0,100000)
 
 db = {}
