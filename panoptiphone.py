@@ -185,12 +185,40 @@ def print_frame(f, mac_address):
     print
     print str_ie
     
-    if options.write_file:
-        dump = OrderedDict([('_mac_address_', mac_address), ('_vendor_', vendor)])
-        dump.update({name.strip(): f['val'] for name, f in fields.items()})
-        print >>options.write_file, json.dumps(dump)
-        # print(json.dumps(dump), file = options.write_file)    # python3
-        options.write_file.flush()
+    dump_json(f, fields, mac_address, vendor)
+    
+
+def dump_json(frame, fields, mac_address, vendor):
+
+    if not options.write_file: return
+    dump = OrderedDict([('wlan.sa', mac_address), ('_vendor_', vendor)])
+    
+    dump['timestamp']   = frame.findall("proto[@name='geninfo']/field[@name='timestamp']")[0].get('value')
+    dump['len']         = frame.findall("proto[@name='geninfo']/field[@name='len']")[0].get('show')
+    dump['caplen']      = frame.findall("proto[@name='geninfo']/field[@name='caplen']")[0].get('show')
+    
+    dump['wlan.seq']    = frame.findall("proto[@name='wlan']/field[@name='wlan.seq']")[0].get('show')
+    dump['wlan.ssid']   = list(filter(None, [f.get('show') for f in frame.findall("proto[@name='wlan']//field[@name='wlan.ssid']")]))
+
+    # radiotap
+    antsignal = sorted(int(f.get('show')) for f in frame.findall("proto[@name='radiotap']/field[@name='radiotap.dbm_antsignal']"))
+    assert antsignal[-2] == antsignal[-1]
+    dump['radiotap.dbm_antsignal'] = antsignal[:-1]
+    
+    # wlan_radio
+    dump['wlan_radio.timestamp'] = frame.findall("proto[@name='wlan_radio']/field[@name='wlan_radio.timestamp']") [0].get('show')
+    dump['wlan_radio.duration']  = frame.findall("proto[@name='wlan_radio']/field[@name='wlan_radio.duration']")  [0].get('show')
+    dump['wlan_radio.preamble']  = frame.findall("proto[@name='wlan_radio']//field[@name='wlan_radio.preamble']") [0].get('show')
+    dump['wlan_radio.ifs']       = frame.findall("proto[@name='wlan_radio']//field[@name='wlan_radio.ifs']")      [0].get('show')
+    dump['wlan_radio.start_tsf'] = frame.findall("proto[@name='wlan_radio']//field[@name='wlan_radio.start_tsf']")[0].get('show')
+    dump['wlan_radio.end_tsf']   = frame.findall("proto[@name='wlan_radio']//field[@name='wlan_radio.end_tsf']")  [0].get('show')
+
+    dump['_fields_']    = {name.strip(): f['val'] for name, f in fields.items()}
+    # dump.update({name.strip(): f['val'] for name, f in fields.items()})
+    
+    print >>options.write_file, json.dumps(dump)
+    # print(json.dumps(dump), file = options.write_file)    # python3
+    options.write_file.flush()
     
 
 def get_str_ie(fields, mac_address, vendor):
@@ -545,7 +573,7 @@ def parse_options():
         elif o == '-v':
             options.dump_values = arg
         elif o == '-w':
-            options.write_file = open(arg, 'wt')
+            options.write_file = open(arg, 'at')
         elif o == '-h' or o == '--help':
             help()
 
