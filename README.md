@@ -10,8 +10,11 @@ See details in the related paper: [Panoptiphone: How Unique is Your Wi-Fi Device
 ## Dependencies ##
 
 - tshark
-- python-tk
-- python-matplotlib
+- python2
+- python2-tk
+- python2-matplotlib
+- python2-scipy
+- python2-networkx
 
 ## Install ##
 
