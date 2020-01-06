@@ -27,16 +27,18 @@ for i in sapienza/*/*.pcap* ; do echo "$i" ; tshark -r "$i" -T pdml | python pan
 
 ## Usage ##
 
-Several scripts constitute the program:
-- panoptiphone.py makes the core calculation and can be launched with several options (described below).
-- panoptiphone.sh is a script to launch previous program with the correct options to operate live on the wlan0 interface (wlan0 must be able to switch to monitor mode).
-- panoptiphone_file.sh launches previous program on a file given as a parameter.
+For a first run, run `./panoptiphone.sh` (add your wireless interface in parameters if it's not wlan0).
 
-panoptiphone's.py options:
-- -d: dump the database's content, i.e., information about the different fields (information elements) and the identifying information they bring
-- -g: activate graphical interface
-- -i: activate interactive mode (displays all incoming device captures)
-- -v <field>: dump details about a field
+Several scripts constitute the program:
+- `panoptiphone.py` makes the core calculation and can be launched with several options (described below).
+- `panoptiphone.sh` launches the previous script with the correct options to operate live on the wlan0 interface (wlan0 must be able to switch to monitor mode).
+- `panoptiphone_file.sh` launches previous program on a file given as a parameter.
+
+`panoptiphone.py`'s options:
+- `-d`: dump the database's content, i.e., information about the different fields (information elements) and the identifying information they bring
+- `-g`: activate graphical interface
+- `-i`: activate interactive mode (displays all incoming device captures)
+- `-v <field>`: dump details about a field
 
 ## Examples of uses ##
 
