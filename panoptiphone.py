@@ -505,10 +505,15 @@ def draw_GUI():
     gui = GUI()
     gui.win.mainloop()
 
+def help():
+    print "Usage: python2 panoptiphone.py [-dgivh]"
+    print "If you don't know what you're doing, you probably want to run panoptiphone.sh"
+    sys.exit(0)
+
 def parse_options():
     global options
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'df:giv:x')
+        opts, args = getopt.getopt(sys.argv[1:], 'df:ghiv:x')
     except getopt.GetoptError as err:
         print "Error: ", str(err)
         sys.exit(1)
@@ -521,6 +526,8 @@ def parse_options():
             options.interactive = True
         elif o == '-v':
             options.dump_values = arg
+        elif o == '-h':
+            help()
 
 def normal_execution():
     if options.dump_db == True:
