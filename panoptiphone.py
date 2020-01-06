@@ -349,7 +349,11 @@ def save_db():
 def dump_db():
     global db
     fields = {}
-    m = max([len(x) for x in db.keys()])
+    lengths = [len(x) for x in db.keys()]
+    if not lengths:
+        print "Error: database is empty. Run panoptiphone.sh first!"
+        sys.exit(1)
+    m = max(lengths)
     sep = " "
     sep2 = " "
     nb_devices = len(mac_addresses)
