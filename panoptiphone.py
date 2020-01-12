@@ -559,7 +559,7 @@ def help():
 def parse_options():
     global options
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'df:ghiv:wx', ['help'])
+        opts, args = getopt.getopt(sys.argv[1:], 'df:ghiv:w:x', ['help'])
     except getopt.GetoptError as err:
         print "Error: ", str(err)
         sys.exit(1)
