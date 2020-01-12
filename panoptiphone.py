@@ -198,20 +198,27 @@ def dump_json(frame, fields, mac_address, vendor):
     dump['wlan.ssid']   = list(filter(None, [f.get('show') for f in frame.findall("proto[@name='wlan']//field[@name='wlan.ssid']")]))
 
     # radiotap
-    antsignal = sorted(int(f.get('show')) for f in frame.findall("proto[@name='radiotap']/field[@name='radiotap.dbm_antsignal']"))
-    assert antsignal[-2] == antsignal[-1]
-    dump['radiotap.dbm_antsignal'] = antsignal[:-1]
-    
+    try:
+        antsignal = sorted(int(f.get('show')) for f in frame.findall("proto[@name='radiotap']/field[@name='radiotap.dbm_antsignal']"))
+        assert antsignal[-2] == antsignal[-1]
+        dump['radiotap.dbm_antsignal'] = antsignal[:-1]
+    except IndexError:
+        print "Warning: Could not find radiotap.dbm_antsignal in frame"
+        dump['radiotap.dbm_antsignal'] = 0
+
     # wlan_radio
-    dump['wlan_radio.timestamp'] = frame.findall("proto[@name='wlan_radio']/field[@name='wlan_radio.timestamp']") [0].get('show')
-    dump['wlan_radio.duration']  = frame.findall("proto[@name='wlan_radio']/field[@name='wlan_radio.duration']")  [0].get('show')
-    dump['wlan_radio.preamble']  = frame.findall("proto[@name='wlan_radio']//field[@name='wlan_radio.preamble']") [0].get('show')
-    dump['wlan_radio.ifs']       = frame.findall("proto[@name='wlan_radio']//field[@name='wlan_radio.ifs']")      [0].get('show')
-    dump['wlan_radio.start_tsf'] = frame.findall("proto[@name='wlan_radio']//field[@name='wlan_radio.start_tsf']")[0].get('show')
-    dump['wlan_radio.end_tsf']   = frame.findall("proto[@name='wlan_radio']//field[@name='wlan_radio.end_tsf']")  [0].get('show')
+    try:
+        dump['wlan_radio.timestamp'] = frame.findall("proto[@name='wlan_radio']/field[@name='wlan_radio.timestamp']") [0].get('show')
+        dump['wlan_radio.duration']  = frame.findall("proto[@name='wlan_radio']/field[@name='wlan_radio.duration']")  [0].get('show')
+        dump['wlan_radio.preamble']  = frame.findall("proto[@name='wlan_radio']//field[@name='wlan_radio.preamble']") [0].get('show')
+        dump['wlan_radio.ifs']       = frame.findall("proto[@name='wlan_radio']//field[@name='wlan_radio.ifs']")      [0].get('show')
+        dump['wlan_radio.start_tsf'] = frame.findall("proto[@name='wlan_radio']//field[@name='wlan_radio.start_tsf']")[0].get('show')
+        dump['wlan_radio.end_tsf']   = frame.findall("proto[@name='wlan_radio']//field[@name='wlan_radio.end_tsf']")  [0].get('show')
+    except IndexError:
+        print "Warning: Could not find wlan_radio in frame"
 
     dump['_fields_']    = {name.strip(): f['val'] for name, f in fields.items()}
-    
+
     print >>options.write_file, json.dumps(dump)
     options.write_file.flush()
 
