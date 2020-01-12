@@ -184,19 +184,16 @@ def print_frame(f, mac_address):
             create_dendrograms(d, fields)
     print
     print str_ie
-    
     if options.write_file:
         dump_json(f, fields, mac_address, vendor)
 
 def dump_json(frame, fields, mac_address, vendor):
-
-    if not options.write_file: return
+    if not options.write_file:
+        return
     dump = OrderedDict([('wlan.sa', mac_address), ('_vendor_', vendor)])
-    
     dump['timestamp']   = frame.findall("proto[@name='geninfo']/field[@name='timestamp']")[0].get('value')
     dump['len']         = frame.findall("proto[@name='geninfo']/field[@name='len']")[0].get('show')
     dump['caplen']      = frame.findall("proto[@name='geninfo']/field[@name='caplen']")[0].get('show')
-    
     dump['wlan.seq']    = frame.findall("proto[@name='wlan']/field[@name='wlan.seq']")[0].get('show')
     dump['wlan.ssid']   = list(filter(None, [f.get('show') for f in frame.findall("proto[@name='wlan']//field[@name='wlan.ssid']")]))
 
@@ -214,12 +211,9 @@ def dump_json(frame, fields, mac_address, vendor):
     dump['wlan_radio.end_tsf']   = frame.findall("proto[@name='wlan_radio']//field[@name='wlan_radio.end_tsf']")  [0].get('show')
 
     dump['_fields_']    = {name.strip(): f['val'] for name, f in fields.items()}
-    # dump.update({name.strip(): f['val'] for name, f in fields.items()})
     
     print >>options.write_file, json.dumps(dump)
-    # print(json.dumps(dump), file = options.write_file)    # python3
     options.write_file.flush()
-    
 
 def get_str_ie(fields, mac_address, vendor):
     str_ie = ""
