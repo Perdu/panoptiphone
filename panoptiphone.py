@@ -185,8 +185,8 @@ def print_frame(f, mac_address):
     print
     print str_ie
     
-    dump_json(f, fields, mac_address, vendor)
-    
+    if options.write_file:
+        dump_json(f, fields, mac_address, vendor)
 
 def dump_json(frame, fields, mac_address, vendor):
 
