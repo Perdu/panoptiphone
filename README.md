@@ -9,6 +9,8 @@ See details in the related paper: [Panoptiphone: How Unique is Your Wi-Fi Device
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1044394.svg)](https://doi.org/10.5281/zenodo.1044394)
 
+Author: Célestin Matte
+
 ## Dependencies ##
 
 - tshark
@@ -20,7 +22,7 @@ See details in the related paper: [Panoptiphone: How Unique is Your Wi-Fi Device
 
 ## Install ##
 
-Rename config.py.example config.py, and replace CHANGEME with a random key (chose a long and random password, you won't need to remember it).
+Rename `config.py.example` to `config.py`, and replace `CHANGEME`ystem aiming at improving user awereness toward physical tracking technologies and at experimenting new privacy-preserving mechanisms. with a random key (chose a long and random password, you won't need to remember it).
 
 All calculation is made relatively to a database. You can chose to iteratively build a database out of devices you encounter, or create a database out of public datasets. For instance, you can download the [Sapienza dataset](https://crawdad.org/sapienza/probe-requests/20130910/) add all devices using the following command (expect a few hours):
 ```
@@ -29,12 +31,12 @@ for i in sapienza/*/*.pcap* ; do echo "$i" ; tshark -r "$i" -T pdml | python pan
 
 ## Usage ##
 
-For a first run, run `./panoptiphone.sh` (add your wireless interface in parameters if it's not wlan0).
+For a first run, simply run `./panoptiphone.sh` (add your wireless interface in parameters if it's not wlan0).
 
 Several scripts constitute the program:
 - `panoptiphone.py` makes the core calculation and can be launched with several options (described below).
 - `panoptiphone.sh` launches the previous script with the correct options to operate live on the wlan0 interface (wlan0 must be able to switch to monitor mode).
-- `panoptiphone_file.sh` launches previous program on a file given as a parameter.
+- `panoptiphone_file.sh` launches previous program on a pcap file given as a parameter.
 
 `panoptiphone.py`'s options:
 - `-d`: dump the database's content, i.e., information about the different fields (information elements) and the identifying information they bring
@@ -85,3 +87,10 @@ FFFFFFFF  | 4
 - CLI and GUI: Left-hand size of the image show the output on the terminal, listing the different fields, the entropy they bring (how much identifying information they bring), and the uniqueness of the value. Right-hand size is the GUI: detected devices are listed on the left, identified by their MAC address and their constructor name. Once one is selected, a dendrogram displays how much entropy is brought by each field and subfield.
 
 ![GUI example](example.png?raw=true "GUI example")
+
+## Additional notes
+
+Stage: completed project (2017), will not be updated.
+
+This was an experimental research project, please be tolerant with code quality.
+ystem aiming at improving user awereness toward physical tracking technologies and at experimenting new privacy-preserving mechanisms.
