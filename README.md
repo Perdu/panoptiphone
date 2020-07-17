@@ -93,4 +93,3 @@ FFFFFFFF  | 4
 Stage: completed project (2017), will not be updated.
 
 This was an experimental research project, please be tolerant with code quality.
-ystem aiming at improving user awereness toward physical tracking technologies and at experimenting new privacy-preserving mechanisms.
