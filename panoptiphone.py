@@ -21,10 +21,7 @@ from scipy.cluster.hierarchy import dendrogram, linkage
 import numpy as np
 import networkx as nx
 import matplotlib
-#matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-# implement the default mpl key bindings
-#from matplotlib.backend_bases import key_press_handler
 from matplotlib.figure import Figure
 import hashlib
 import json
